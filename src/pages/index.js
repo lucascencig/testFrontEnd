@@ -20,16 +20,43 @@ import {
   ModalContent,
   ModalCloseButton,
   useDisclosure,
+  Center,
+  Image,
+  Text,
+  extendTheme
 } from "@chakra-ui/react";
 import PokemonCard from "@/components/PokemonCard";
 import PokemonData from "@/components/PokemonData";
 
+import { TbPokeball } from "react-icons/tb";
+
+
+
+const borderRadius = {
+  radii: {
+    none: '0',
+    sm: '0.125rem',
+    base: '0.25rem',
+    md: '0.375rem',
+    lg: '0.5rem',
+    xl: '0.75rem',
+    '2xl': '1rem',
+    '3xl': '1.5rem',
+    full: '9999px',
+  },
+}
+
+const theme = extendTheme({ borderRadius })
+
 export default function Home() {
   const pokemonDataModal = useDisclosure();
+  const myPokemonsModal = useDisclosure();
+
 
   const [isLoading, setIsLoading] = useState(false);
   const [pokemon, setPokemon] = useState([]);
   const [selectedPokemon, setSelectedPokemon] = useState();
+  const [myPokemons, setMyPokemons] = useState([]);
   const [currentPage, setCurrentPage] = useState(
     "https://pokeapi.co/api/v2/pokemon/?limit=20&offset=0"
   );
@@ -46,13 +73,37 @@ export default function Home() {
     });
   }, [currentPage]);
 
-  function handleNextPage() {}
+  function handleNextPage() { }
 
+
+  //FUNCION ABRIR MODAL POKEMON SELECCIONADO
   function handleViewPokemon(pokemon) {
     setSelectedPokemon(pokemon);
     pokemonDataModal.onOpen();
   }
 
+  //FUNCION ABRIR MODAL DE POKEMONES CATCHED
+  async function openModalMyPokemons(pokemon) {
+    myPokemonsModal.onOpen();
+    try {
+      const allMyPokemons = await axios.get(`/api/catched`);
+      setMyPokemons(allMyPokemons.data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  //FUNCION ELIMINAR POKEMON
+  const handleDeletePokemon = async (pokemon) => {
+    try {
+      await axios.delete(`/api/catched/${pokemon.id}`);
+
+
+      setMyPokemons((prevPokemons) => prevPokemons.filter((pokemonid) => pokemonid.id !== pokemon.id));
+    } catch (error) {
+      console.error("Error deleting pokemon:", error);
+    }
+  };
   return (
     <>
       <Head>
@@ -61,8 +112,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <Flex alignItems="center" minH="100vh" justifyContent="center">
         <Container maxW="container.lg">
+          <Center mt="8">
+            <Button as="button" onClick={openModalMyPokemons} pos="fixed" zIndex={99} colorScheme="green" borderRadius="full">
+              <TbPokeball />
+
+            </Button>
+          </Center>
           <Stack p="5" alignItems="center" spacing="5">
             <SimpleGrid spacing="5" columns={{ base: 1, md: 5 }}>
               {pokemon.map((pokemon) => (
@@ -82,6 +140,8 @@ export default function Home() {
           </Stack>
         </Container>
       </Flex>
+
+
       <Modal {...pokemonDataModal}>
         <ModalOverlay />
         <ModalContent>
@@ -94,6 +154,29 @@ export default function Home() {
           </ModalBody>
         </ModalContent>
       </Modal>
+
+
+      <Modal {...myPokemonsModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>My Pokemons</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody >
+            <SimpleGrid spacing="5" columns={{ base: 1, md: 5 }}>
+              {myPokemons.map((pokemon) => (
+                <Box key={pokemon.id}>
+                  <Image w={256} src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemon.id}.png`} />
+                  <Center fontSize="lg" >{pokemon.name}</Center>
+                  <Button w={50} onClick={() => handleDeletePokemon(pokemon)}>X</Button>
+                </Box>
+              ))}
+            </SimpleGrid>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+
+
     </>
   );
 }
