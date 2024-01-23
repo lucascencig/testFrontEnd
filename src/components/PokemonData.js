@@ -39,6 +39,13 @@ export default function PokemonData({ pokemon }) {
           id: pokemon.id,
           name: pokemon.name,
         });
+        window.localStorage.setItem('catched', pokemon.id);
+
+        if (window.localStorage.getItem('catched', pokemon.id === pokemon.id)) {
+          return (
+            <Center fontSize={20} fontWeight="bold" color="Lime">Catched!</Center>
+          )
+        }
       }
     } catch (error) {
       console.error("Error:", error);
@@ -59,9 +66,11 @@ export default function PokemonData({ pokemon }) {
         <Box position="" right="0" zIndex="99">
           {
             catched === false ?
-              <Checkbox isChecked={catched} onChange={handleCathPokemon}>
-                "Catch"
-              </Checkbox>
+              <Center>
+                <Checkbox isChecked={catched} onChange={handleCathPokemon}>
+                  Catch
+                </Checkbox>
+              </Center>
               :
               <Center fontSize={20} fontWeight="bold" color="Lime">Catched! </Center>
           }
