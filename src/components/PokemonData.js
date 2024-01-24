@@ -1,39 +1,21 @@
 import {
   Box,
-  AspectRatio,
-  Image,
   Stack,
-  SimpleGrid,
-  Heading,
-  Tabs,
-  TabList,
-  TabPanels,
-  TabPanel,
   Progress,
   Text,
-  Tab,
   Badge,
-  HStack,
-  Checkbox,
-  Flex,
   Center,
-  CheckboxGroup,
-  AlertIcon,
-  Alert,
-  Wrap,
-  WrapItem,
-  Button,
   Grid
 } from "@chakra-ui/react";
 
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useToast } from '@chakra-ui/react'
-import styles from '../styles/Home.module.css'
 import { getTypeColors } from "@/pages/api/typesColors";
 import { getTypeBackground } from '@/pages/api/typesBackground'
 import PokemonImage from "./PokemonImagen";
 import CheckboxToggle from "./CheckboxToggle"
+import styles from '../styles/Home.module.css'
 
 
 export default function PokemonData({ pokemon }) {
