@@ -42,6 +42,7 @@ export default function PokemonCard({ pokemon }) {
             key={index}
             fontWeight="bold"
             bg={color}
+            borderRadius="md"
           >
             {pokemon.types[index].type.name}
           </Badge>

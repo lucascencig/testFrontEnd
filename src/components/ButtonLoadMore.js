@@ -5,8 +5,9 @@ export const ButtonLoadMore = ({ handleNextPage, isLoading }) => {
   return (
     <Button
       border="2px"
-      borderColor="cyan.300"
-      bg="Cyan.200"
+      borderColor="yellow.300"
+      bg="yellow.200"
+      _hover="background: yellow.200"
       className={styles.btnLoadMore}
       isLoading={isLoading}
       onClick={handleNextPage}

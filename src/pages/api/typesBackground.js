@@ -3,7 +3,7 @@ export const getTypeBackground = (type) => {
     case 'grass':
       return 'linear-gradient(to bottom, #9CCF73, #58BB47)';
     case 'fire':
-      return 'linear-gradient(to bottom, #FF6E00, #FA5018)';
+      return 'linear-gradient(to bottom, #FF6E00, #F76333)';
     case 'water':
       return 'linear-gradient(to bottom, #52B8F6, #2C51DA)';
     case 'bug':

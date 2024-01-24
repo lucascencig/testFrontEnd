@@ -139,6 +139,8 @@ export default function PokemonData({ pokemon }) {
                       fontWeight="bold"
                       bg={color}
                       m={{ base: '1', md: '1' }}
+                      borderRadius="md"
+
                     >
                       {pokemon.types[index].type.name}
                     </Badge>

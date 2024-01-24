@@ -30,7 +30,7 @@ export const getTypeColors = (types) => {
       case 'steel':
         return '#5F92A5';
       case 'electric':
-        return '#FBD208';
+        return '#F9E480';
       case 'psychic':
         return '#FF6B79';
       case 'ice':

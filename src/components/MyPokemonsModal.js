@@ -39,8 +39,8 @@ export const MyPokemonsModal = ({ isOpen, onClose, myPokemons, handleDeletePokem
             myPokemons.length <= 0
               ?
               (
-                <Center w='300px' fontWeight='600' fontSize="15" justifyContent="center" alignItems="center" m="auto">
-                  <Stack justifyContent="center" alignItems="center">
+                <Center w={{ base: '300px', md: "400px", lg: "400px" }} fontWeight='600' fontSize="15" justifyContent="center" alignItems="center" m="auto">
+                  <Stack justifyContent="center" alignItems="center" m="auto">
                     <Text>Prof. Oak:</Text>
                     <p className={styles.typedText}>You don´t have any pokemon yet!</p>
                   </Stack>
