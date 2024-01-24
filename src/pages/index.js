@@ -3,32 +3,17 @@ import Head from "next/head";
 import { Inter, Island_Moments } from "next/font/google";
 import styles from "../styles/Home.module.css";
 import axios from "axios";
-
 import { useEffect, useState } from "react";
 import {
   Container,
   Stack,
-  Input,
   Button,
-  SimpleGrid,
   Flex,
-  Box,
-  Modal,
-  ModalOverlay,
-  ModalHeader,
-  ModalBody,
-  ModalContent,
-  ModalCloseButton,
   useDisclosure,
-  Center,
-  Image,
-  Text,
   extendTheme,
   useToast,
 } from "@chakra-ui/react";
 import { SeoComponent } from "@/components/SeoComponent";
-import PokemonCard from "@/components/PokemonCard";
-import PokemonData from "@/components/PokemonData";
 import PokemonList from "@/components/PokemonList";
 import fetchPokemonData from '../pages/api/fetchData'
 import { ButtonMyPokemons } from "@/components/ButtonMyPokemons";
