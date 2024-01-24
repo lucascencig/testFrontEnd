@@ -29,8 +29,6 @@ export default function PokemonData({ pokemon }) {
     setIsHovered(!isHovered);
   };
 
-
-
   const typeColors = getTypeColors(pokemon.types[0] && pokemon.types[1]);
 
   const cardStyle = {
