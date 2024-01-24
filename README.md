@@ -1,3 +1,9 @@
+# Test finalizado
+El test esta terminado en su totalidad con todas sus funcionalidades y estilos pertinentes.
+- Fue componetizado y modularizado.
+- Limpio en código innecesario o que no se utilizan.
+- Refactorización
+
 # Pokémon Test
 
 El objetivo de la app es listar todos los Pokémon y mostrar información de los mismos al clickear sobre ellos. También la app mostrará de alguna forma los Pokémon que el usuario tiene capturados.
