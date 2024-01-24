@@ -5,12 +5,12 @@ import {
   Text,
   Badge,
   Center,
-  Grid
+  Grid,
+  useToast
 } from "@chakra-ui/react";
 
 import axios from "axios";
 import { useState } from "react";
-import { useToast } from '@chakra-ui/react'
 import { getTypeColors } from "@/pages/api/typesColors";
 import { getTypeBackground } from '@/pages/api/typesBackground'
 import PokemonImage from "./PokemonImagen";
@@ -19,17 +19,14 @@ import styles from '../styles/Home.module.css'
 
 
 export default function PokemonData({ pokemon }) {
+  const apiPost = `/api/catched?pokemonId=${pokemon.id}`
 
   const [catched, setCatched] = useState(false);
-  const [deletePokemon, setDeletePokemon] = useState(false)
-  const [isHovered, setIsHovered] = useState(false);
+
   const toast = useToast()
 
-  const handleHover = () => {
-    setIsHovered(!isHovered);
-  };
 
-  const typeColors = getTypeColors(pokemon.types[0] && pokemon.types[1]);
+
 
   const cardStyle = {
     background: getTypeBackground(pokemon.types[0].type.name),
@@ -40,7 +37,7 @@ export default function PokemonData({ pokemon }) {
       setCatched(!catched);
 
       if (catched === false) {
-        await axios.post(`/api/catched?pokemonId=${pokemon.id}`, {
+        await axios.post(apiPost, {
           id: pokemon.id,
           name: pokemon.name,
         });
@@ -51,7 +48,7 @@ export default function PokemonData({ pokemon }) {
           return (
             toast({
               position: 'top',
-              title: 'Catched!',
+              title: `Congrats...! You've caught ${pokemon.name}!`,
               status: 'success',
               duration: 2000,
               isClosable: true,
@@ -63,9 +60,6 @@ export default function PokemonData({ pokemon }) {
       console.error("Error:", error);
     }
   };
-
-  console.log(pokemon.id)
-
 
 
 
@@ -82,8 +76,6 @@ export default function PokemonData({ pokemon }) {
         className={styles.bgpokeball}
         borderRadius="lg"
         style={cardStyle}
-        onMouseEnter={handleHover}
-        onMouseLeave={handleHover}
         mt="50px"
       >
         <PokemonImage id={pokemon.id} name={pokemon.name} />
@@ -94,7 +86,6 @@ export default function PokemonData({ pokemon }) {
           label={catched ? 'Catched!' : 'Catch'}
         />
         <Box
-          transition="transform 0.7s ease-in-out"
           borderRadius="xl">
           <Center>
             <Stack

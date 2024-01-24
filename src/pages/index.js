@@ -19,6 +19,7 @@ import fetchPokemonData from '../pages/api/fetchData'
 import { ButtonMyPokemons } from "@/components/ButtonMyPokemons";
 import { PokemonDataModal } from "@/components/PokemonDataModal";
 import { MyPokemonsModal } from "@/components/MyPokemonsModal";
+import { ButtonLoadMore } from "@/components/ButtonLoadMore";
 
 
 const borderRadius = {
@@ -30,6 +31,8 @@ const borderRadius = {
 const theme = extendTheme({ borderRadius })
 
 export default function Home() {
+  const apiCatched = `/api/catched`
+
   const pokemonDataModal = useDisclosure();
   const myPokemonsModal = useDisclosure();
   const toast = useToast()
@@ -38,10 +41,8 @@ export default function Home() {
   const [pokemon, setPokemon] = useState([]);
   const [selectedPokemon, setSelectedPokemon] = useState();
   const [myPokemons, setMyPokemons] = useState([]);
-  const [currentPage, setCurrentPage] = useState(
-    "https://pokeapi.co/api/v2/pokemon/?limit=20&offset=0"
-  );
-  const [offsetCount, setOffsetCount] = useState(20)
+  const [currentPage, setCurrentPage] = useState("https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20");
+  const [offsetCount, setOffsetCount] = useState(0);
 
   useEffect(() => {
     fetchPokemonData(currentPage, setPokemon, setIsLoading);
@@ -49,18 +50,18 @@ export default function Home() {
 
   async function handleNextPage() {
 
-    const newOffsetCount = offsetCount + 20;
+    let newOffsetCount = offsetCount + 20;
 
+    console.log(newOffsetCount);
 
     setOffsetCount(newOffsetCount);
 
-    const url = `https://pokeapi.co/api/v2/pokemon/?limit=20&offset=${newOffsetCount}`;
+    const url = `https://pokeapi.co/api/v2/pokemon/?offset=${offsetCount}&limit=20`;
     const result = await axios.get(url);
     const nextpage = result.data.next;
+    console.log(nextpage);
 
-    console.log(newOffsetCount);
     setCurrentPage(nextpage);
-
   }
 
   //FUNCION ABRIR MODAL POKEMON SELECCIONADO
@@ -71,9 +72,10 @@ export default function Home() {
 
   //FUNCION ABRIR MODAL DE POKEMONES CATCHED
   async function openModalMyPokemons() {
+
     myPokemonsModal.onOpen();
     try {
-      const allMyPokemons = await axios.get(`/api/catched`);
+      const allMyPokemons = await axios.get(apiCatched);
       setMyPokemons(allMyPokemons.data);
     } catch (error) {
       console.error("Erro al obtener los pokemones:", error);
@@ -82,11 +84,14 @@ export default function Home() {
 
   //FUNCION ELIMINAR POKEMON
   const handleDeletePokemon = async (pokemon) => {
+    const apiCatchedId = `/api/catched/${pokemon.id}`
+
     try {
-      await axios.delete(`/api/catched/${pokemon.id}`);
+      await axios.delete(apiCatchedId);
 
       setMyPokemons((prevPokemons) =>
-        prevPokemons.filter((pokemonid) => pokemonid.id !== pokemon.id));
+        prevPokemons.filter((pokemonid) =>
+          pokemonid.id !== pokemon.id));
 
       toast({
         position: 'top',
@@ -95,15 +100,10 @@ export default function Home() {
         duration: 2000,
         isClosable: true,
       })
-
-
     } catch (error) {
       console.error("No se pudo eliminar el pokemon:", error);
     }
   };
-
-
-
 
 
   return (
@@ -115,23 +115,13 @@ export default function Home() {
 
         <Container maxW="10xl" w="100%">
 
-
           <ButtonMyPokemons onClick={openModalMyPokemons} />
-
 
           <Stack p="5" alignItems="center" spacing={{ base: 5, md: 5, lg: 10 }}>
             <PokemonList pokemon={pokemon} handleViewPokemon={handleViewPokemon} />
 
-            <Button
-              border="2px"
-              borderColor="cyan.300"
-              bg="Cyan.200"
-              className={styles.btnLoadMore}
-              isLoading={isLoading}
-              onClick={handleNextPage}
-            >
-              Load more
-            </Button>
+            < ButtonLoadMore handleNextPage={handleNextPage} isLoading={isLoading} />
+
           </Stack>
         </Container>
       </Flex>
