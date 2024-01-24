@@ -1,4 +1,4 @@
-const getTypeColors = (types) => {
+export const getTypeColors = (types) => {
   const typeArray = Array.isArray(types) ? types : [types];
 
   const colors = typeArray.map((type) => {
@@ -54,4 +54,3 @@ const getTypeColors = (types) => {
 };
 
 
-export default getTypeColors;
