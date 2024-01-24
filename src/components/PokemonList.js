@@ -1,10 +1,4 @@
-import Head from "next/head";
-
 import { Inter, Island_Moments } from "next/font/google";
-import styles from "../styles/Home.module.css";
-
-
-
 import {
   SimpleGrid,
   Box,

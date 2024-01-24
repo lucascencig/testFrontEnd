@@ -21,21 +21,19 @@ import { PokemonDataModal } from "@/components/PokemonDataModal";
 import { MyPokemonsModal } from "@/components/MyPokemonsModal";
 import { ButtonLoadMore } from "@/components/ButtonLoadMore";
 
-
 const borderRadius = {
   radii: {
     full: '9999px',
   },
 }
-
 const theme = extendTheme({ borderRadius })
 
 export default function Home() {
   const apiCatched = `/api/catched`
+  const toast = useToast()
 
   const pokemonDataModal = useDisclosure();
   const myPokemonsModal = useDisclosure();
-  const toast = useToast()
 
   const [isLoading, setIsLoading] = useState(false);
   const [pokemon, setPokemon] = useState([]);
@@ -51,7 +49,6 @@ export default function Home() {
   async function handleNextPage() {
 
     let newOffsetCount = offsetCount + 20;
-
     console.log(newOffsetCount);
 
     setOffsetCount(newOffsetCount);
@@ -109,31 +106,18 @@ export default function Home() {
   return (
     <div >
       <SeoComponent />
-
       <Flex className={styles.main} >
         <div className={styles.pokemonlogo} />
-
         <Container maxW="10xl" w="100%">
-
           <ButtonMyPokemons onClick={openModalMyPokemons} />
-
           <Stack p="5" alignItems="center" spacing={{ base: 5, md: 5, lg: 10 }}>
             <PokemonList pokemon={pokemon} handleViewPokemon={handleViewPokemon} />
-
             < ButtonLoadMore handleNextPage={handleNextPage} isLoading={isLoading} />
-
           </Stack>
         </Container>
       </Flex>
-
-
       <PokemonDataModal isOpen={pokemonDataModal.isOpen} onClose={pokemonDataModal.onClose} selectedPokemon={selectedPokemon} />
-
-
       <MyPokemonsModal isOpen={myPokemonsModal.isOpen} onClose={myPokemonsModal.onClose} myPokemons={myPokemons} handleDeletePokemon={handleDeletePokemon} />
-
-
-
     </div>
   );
 }

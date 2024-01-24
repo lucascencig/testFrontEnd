@@ -1,10 +1,4 @@
-import Head from "next/head";
-
-import { Inter, Island_Moments } from "next/font/google";
-
 import axios from "axios";
-
-
 
 const fetchPokemonData = async (currentPage, setPokemon, setIsLoading) => {
   setIsLoading(true);

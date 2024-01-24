@@ -1,5 +1,4 @@
 import { Image } from "@chakra-ui/react";
-import styles from '../styles/Home.module.css';
 
 const PokemonImage = ({ id, name }) => (
   <Image

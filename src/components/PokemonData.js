@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getTypeColors } from "@/pages/api/typesColors";
 import { getTypeBackground } from '@/pages/api/typesBackground'
 import PokemonImage from "./PokemonImagen";
@@ -18,15 +18,17 @@ import CheckboxToggle from "./CheckboxToggle"
 import styles from '../styles/Home.module.css'
 
 
+
 export default function PokemonData({ pokemon }) {
   const apiPost = `/api/catched?pokemonId=${pokemon.id}`
+  const toast = useToast()
 
   const [catched, setCatched] = useState(false);
 
-  const toast = useToast()
-
-
-
+  useEffect(() => {
+    const isCatched = window.localStorage.getItem('catched') === pokemon.id;
+    setCatched(isCatched);
+  }, []);
 
   const cardStyle = {
     background: getTypeBackground(pokemon.types[0].type.name),
@@ -34,33 +36,37 @@ export default function PokemonData({ pokemon }) {
 
   const handleCathPokemon = async () => {
     try {
-      setCatched(!catched);
-
-      if (catched === false) {
-        await axios.post(apiPost, {
-          id: pokemon.id,
-          name: pokemon.name,
+      if (catched) {
+        toast({
+          position: 'top',
+          title: `Pokemon already caught!`,
+          status: 'warning',
+          duration: 2000,
+          isClosable: true,
         });
-        window.localStorage.setItem('catched', pokemon.id);
-
-        if (window.localStorage.getItem('catched', pokemon.id === pokemon.id)) {
-
-          return (
-            toast({
-              position: 'top',
-              title: `Congrats...! You've caught ${pokemon.name}!`,
-              status: 'success',
-              duration: 2000,
-              isClosable: true,
-            })
-          )
-        }
+        return;
       }
+
+      setCatched(true);
+
+      await axios.post(apiPost, {
+        id: pokemon.id,
+        name: pokemon.name,
+      });
+
+      window.localStorage.setItem('catched', pokemon.id);
+
+      toast({
+        position: 'top',
+        title: `Congrats...! You've caught ${pokemon.name}!`,
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error("Error:", error);
     }
   };
-
 
 
   return (
@@ -84,6 +90,7 @@ export default function PokemonData({ pokemon }) {
           isChecked={catched}
           onChange={handleCathPokemon}
           label={catched ? 'Catched!' : 'Catch'}
+
         />
         <Box
           borderRadius="xl">

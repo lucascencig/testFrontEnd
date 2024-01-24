@@ -11,8 +11,6 @@ import styles from "../styles/Home.module.css";
 
 export const PokemonDataModal = ({ isOpen, onClose, selectedPokemon }) => (
 
-
-
   <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
     <ModalContent
